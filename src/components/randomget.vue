@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col
-      v-for="n in 15"
+      v-for="n in 12"
       :key="n"
       class="d-flex child-flex"
       cols="3"
@@ -30,37 +30,26 @@
 
 
 <script>
+  import crypto from 'crypto';
+  const shasum = crypto.createHash('sha1');
   export default {
     name: 'RandomGet',
     data(){
         return {
             dataUrl:"",
-            items:[
-                require("@/assets/000000.gif"),
-                require("@/assets/000001.gif"),
-                require("@/assets/000002.gif"),
-                require("@/assets/000003.gif"),
-                require("@/assets/000004.gif"),
-                require("@/assets/000005.gif"),
-                require("@/assets/000006.gif"),
-                require("@/assets/000007.gif"),
-                require("@/assets/000008.gif"),
-                require("@/assets/000009.gif"),
-                require("@/assets/000010.gif"),
-                require("@/assets/000011.gif"),
-                require("@/assets/000012.gif"),
-                require("@/assets/000013.gif"),
-                require("@/assets/000014.gif"),
-            ]
+            items:[]
         }
     },
-    /*
+    
     mounted() {
-        this.items = []
-        for (let step = 0; step < 15; step++){
-            //this.axios.get("http://localhost:15000/generate_gif", 
-            this.axios.get("https://c970cc9ad36a.ngrok.io/generate_gif?n=" + String(step), 
-            {responseType: "arraybuffer"})
+        this.axios.get("https://c970cc9ad36a.ngrok.io/wakeup_test"
+        ).then(() => {
+            this.items = []
+            for (let step = 0; step < 16; step++){
+                shasum.update((new Date).toString());
+                //this.axios.get("http://localhost:15000/generate_gif", 
+                this.axios.get("https://c970cc9ad36a.ngrok.io/generate_gif?hash=" + String(shasum.digest('hex')), 
+                {responseType: "arraybuffer"})
                 .then((response) => {
                     const prefix = `data:${response.headers["content-type"]};base64,`;
                     const base64 = new Buffer(response.data, "binary").toString("base64");
@@ -74,8 +63,26 @@
                     alert(e);
                 });
         }
+        }).catch(() => {
+            alert("back end server is off-line \n we will show pre-rendered animation");
+            this.items = [require("@/assets/000000.gif"),
+                require("@/assets/000001.gif"),
+                require("@/assets/000002.gif"),
+                require("@/assets/000003.gif"),
+                require("@/assets/000004.gif"),
+                require("@/assets/000005.gif"),
+                require("@/assets/000006.gif"),
+                require("@/assets/000007.gif"),
+                require("@/assets/000008.gif"),
+                require("@/assets/000009.gif"),
+                require("@/assets/000010.gif"),
+                require("@/assets/000011.gif"),
+                require("@/assets/000012.gif"),
+                require("@/assets/000013.gif"),
+                require("@/assets/000014.gif"),];
+
+        });
     },
-    */
     methods: {
       getIp: function() {
         this.items = []
