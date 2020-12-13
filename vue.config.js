@@ -1,4 +1,15 @@
 module.exports = {
-    publicPath: './',
-    outputDir: 'docs/',
-  }
+  "publicPath": "./",
+  "outputDir": "docs/",
+  "transpileDependencies": [
+    "vuetify"
+  ]
+  configureWebpack: {
+    resolve: {
+      alias: {
+        vue$: 'vue/dist/vue.esm.js',
+        '@': path.resolve(__dirname, 'src/'),
+      },
+    },
+  },
+}

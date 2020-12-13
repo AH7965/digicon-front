@@ -1,26 +1,77 @@
 <template>
-<div>
-<div id="message_board">
-  <div v-for="(item, key) in items" :key="key">
-    <div>
-      <img v-bind:src="item"/>
-    </div>
-    
-  </div>
-  <button v-on:click="getIp"> update </button>
-</div>
-
-</div>
+  <v-row>
+    <v-col
+      v-for="n in 15"
+      :key="n"
+      class="d-flex child-flex"
+      cols="3"
+    >
+      <v-img
+        :src="items[n-1]"
+        aspect-ratio="1"
+        class="grey lighten-2"
+      >
+        <template v-slot:placeholder>
+          <v-row
+            class="fill-height ma-0"
+            align="center"
+            justify="center"
+          >
+            <v-progress-circular
+              indeterminate
+              color="grey lighten-5"
+            ></v-progress-circular>
+          </v-row>
+        </template>
+      </v-img>
+    </v-col>
+  </v-row>
 </template>
 
 
 <script>
   export default {
-    name: 'Randomget',
+    name: 'RandomGet',
     data(){
         return {
             dataUrl:"",
-            items:[]
+            items:[
+                require("@/assets/images/000000.gif"),
+                require("@/assets/images/000001.gif"),
+                require("@/assets/images/000002.gif"),
+                require("@/assets/images/000003.gif"),
+                require("@/assets/images/000004.gif"),
+                require("@/assets/images/000005.gif"),
+                require("@/assets/images/000006.gif"),
+                require("@/assets/images/000007.gif"),
+                require("@/assets/images/000008.gif"),
+                require("@/assets/images/000009.gif"),
+                require("@/assets/images/000010.gif"),
+                require("@/assets/images/000011.gif"),
+                require("@/assets/images/000012.gif"),
+                require("@/assets/images/000013.gif"),
+                require("@/assets/images/000014.gif"),
+            ]
+        }
+    },
+    mounted() {
+        this.items = []
+        for (let step = 0; step < 15; step++){
+            //this.axios.get("http://localhost:15000/generate_gif", 
+            this.axios.get("https://c970cc9ad36a.ngrok.io/generate_gif?n=" + String(step), 
+            {responseType: "arraybuffer"})
+                .then((response) => {
+                    const prefix = `data:${response.headers["content-type"]};base64,`;
+                    const base64 = new Buffer(response.data, "binary").toString("base64");
+                    //this.dataUrl = prefix + response.data.img;
+                    //this.items.push(prefix + response.data.img);
+                    this.dataUrl = prefix + base64;
+                    this.items.push(prefix + base64);
+                    console.log(this.dataUrl);
+                })
+                .catch((e) => {
+                    alert(e);
+                });
         }
     },
     methods: {
@@ -44,7 +95,30 @@
             .catch((e) => {
                 alert(e);
             });
+      },
+
+      get_gifs: function() {
+        this.items = []
+        // const params = new URLSearchParams();
+        this.axios.get('https://c970cc9ad36a.ngrok.io/generate_gif')
+            .then((response) => {
+                const prefix = `data:image/png;base64,`;
+                //const base64 = new Buffer(response.data.img, "binary").toString("base64");
+                for (let ret_img in response.data.img) {
+                    console.log(response.data.img[ret_img]);
+                    this.dataUrl = prefix + response.data.img[ret_img];
+                    this.items.push(prefix + response.data.img[ret_img]);
+                }
+
+                console.log(response.data.img);
+                //console.log(response.data.img);
+            })
+            .catch((e) => {
+                alert(e);
+            });
         }
+
+
 
     }
   }
