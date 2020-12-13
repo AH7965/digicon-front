@@ -36,24 +36,25 @@
         return {
             dataUrl:"",
             items:[
-                require("@/assets/images/000000.gif"),
-                require("@/assets/images/000001.gif"),
-                require("@/assets/images/000002.gif"),
-                require("@/assets/images/000003.gif"),
-                require("@/assets/images/000004.gif"),
-                require("@/assets/images/000005.gif"),
-                require("@/assets/images/000006.gif"),
-                require("@/assets/images/000007.gif"),
-                require("@/assets/images/000008.gif"),
-                require("@/assets/images/000009.gif"),
-                require("@/assets/images/000010.gif"),
-                require("@/assets/images/000011.gif"),
-                require("@/assets/images/000012.gif"),
-                require("@/assets/images/000013.gif"),
-                require("@/assets/images/000014.gif"),
+                require("@/assets/000000.gif"),
+                require("@/assets/000001.gif"),
+                require("@/assets/000002.gif"),
+                require("@/assets/000003.gif"),
+                require("@/assets/000004.gif"),
+                require("@/assets/000005.gif"),
+                require("@/assets/000006.gif"),
+                require("@/assets/000007.gif"),
+                require("@/assets/000008.gif"),
+                require("@/assets/000009.gif"),
+                require("@/assets/000010.gif"),
+                require("@/assets/000011.gif"),
+                require("@/assets/000012.gif"),
+                require("@/assets/000013.gif"),
+                require("@/assets/000014.gif"),
             ]
         }
     },
+    /*
     mounted() {
         this.items = []
         for (let step = 0; step < 15; step++){
@@ -74,6 +75,7 @@
                 });
         }
     },
+    */
     methods: {
       getIp: function() {
         this.items = []
