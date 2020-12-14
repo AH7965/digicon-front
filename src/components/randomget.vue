@@ -101,8 +101,8 @@
       tailSize: function() {
         let number;
         switch (this.$vuetify.breakpoint.name) {
-          case 'xs': number = 400; break;
-          case 'sm': number = 400; break;
+          case 'xs': number = 300; break;
+          case 'sm': number = 300; break;
           case 'md': number = 300; break;
           case 'lg': number = 300; break;
           case 'xl': number = 300; break;
