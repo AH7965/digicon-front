@@ -103,7 +103,7 @@
       },
 
       rowCount:function(){
-        return Math.ceil((this.$vuetify.breakpoint.height - 260)  / this.pixshape);
+        return Math.ceil((this.$vuetify.breakpoint.height - 300)  / this.pixshape);
       },
     },
 
