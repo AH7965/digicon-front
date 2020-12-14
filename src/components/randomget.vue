@@ -90,10 +90,22 @@
         let number;
         switch (this.$vuetify.breakpoint.name) {
           case 'xs': number = 3; break;
-          case 'sm': number = 4; break;
+          case 'sm': number = 3; break;
           case 'md': number = 5; break;
-          case 'lg': number = 6; break;
+          case 'lg': number = 7; break;
           case 'xl': number = 7; break;
+        }
+        return number;
+      },
+
+      tailSize: function() {
+        let number;
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': number = 400; break;
+          case 'sm': number = 400; break;
+          case 'md': number = 300; break;
+          case 'lg': number = 300; break;
+          case 'xl': number = 300; break;
         }
         return number;
       },
@@ -103,7 +115,7 @@
       },
 
       rowCount:function(){
-        return Math.ceil((this.$vuetify.breakpoint.height - 300)  / this.pixshape);
+        return Math.ceil((this.$vuetify.breakpoint.height - this.tailSize)  / this.pixshape);
       },
     },
 
