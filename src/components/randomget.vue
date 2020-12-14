@@ -1,31 +1,37 @@
 <template>
-  <v-row>
-    <v-col
-      v-for="n in 12"
-      :key="n"
-      class="d-flex child-flex"
-      cols="3"
-    >
-      <v-img
-        :src="items[n-1]"
-        aspect-ratio="1"
-        class="grey lighten-2"
-      >
-        <template v-slot:placeholder>
-          <v-row
-            class="fill-height ma-0"
-            align="center"
-            justify="center"
-          >
-            <v-progress-circular
-              indeterminate
-              color="grey lighten-5"
-            ></v-progress-circular>
-          </v-row>
-        </template>
-      </v-img>
-    </v-col>
-  </v-row>
+  <v-app>
+    <v-layout wrap>
+        
+    <v-row>
+        <v-col
+        v-for="n in 12"
+        :key="n"
+        class="d-flex child-flex"
+        cols="3"
+        >
+        <v-img
+            :src="items[n-1]"
+            aspect-ratio="1"
+            class="grey lighten-2"
+        >
+            <template v-slot:placeholder>
+            <v-row
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+            >
+                <v-progress-circular
+                indeterminate
+                color="grey lighten-5"
+                ></v-progress-circular>
+            </v-row>
+            </template>
+        </v-img>
+        </v-col>
+    </v-row>
+    <v-flex xs12 sm6 md12 text-center my-5><v-btn>押して</v-btn></v-flex>
+    </v-layout>
+  </v-app>
 </template>
 
 
@@ -42,13 +48,13 @@
     },
     
     mounted() {
-        this.axios.get("https://c970cc9ad36a.ngrok.io/wakeup_test"
+        this.axios.get("https://c7c273c3f0db.ngrok.io/wakeup_test"
         ).then(() => {
             this.items = []
             for (let step = 0; step < 16; step++){
                 shasum.update((new Date).toString());
                 //this.axios.get("http://localhost:15000/generate_gif", 
-                this.axios.get("https://c970cc9ad36a.ngrok.io/generate_gif?hash=" + String(shasum.digest('hex')), 
+                this.axios.get("https://c7c273c3f0db.ngrok.io/generate_gif?hash=" + String(shasum.digest('hex')), 
                 {responseType: "arraybuffer"})
                 .then((response) => {
                     const prefix = `data:${response.headers["content-type"]};base64,`;
