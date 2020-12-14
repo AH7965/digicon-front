@@ -1,10 +1,12 @@
 <template>
     <v-container>
         <h2 class="orange--text font-weight-bold  mb-3">
-          Select your energy
+          Finding your energy
         </h2>
         <v-row v-for="(r, keyr) in rowCount" :key="keyr" >
             <v-col v-for="(c, keyc) in colNumber" :key="keyc">
+                <div @click="selectPicture(keyr*colNumber+keyc)">
+                    <v-card outlined :color="getColor(keyr*colNumber+keyc)">
                 <v-img
                     :src="items[keyr*colNumber+keyc]"
                     aspect-ratio="1"
@@ -22,11 +24,24 @@
                     </v-row>
                     </template>
                 </v-img>
+                    </v-card>
+                </div>
             </v-col>
         </v-row>
+        <v-layout>
+
+        <v-flex xs12 sm6 md12 text-center my-5><v-btn
+                        @click="clearSelect"
+                    color="red">deselect</v-btn></v-flex>
         <v-flex xs12 sm6 md12 text-center my-5><v-btn
                         @click="get_gifs"
                     color="orange">refresh</v-btn></v-flex>
+
+        <v-flex xs12 sm6 md12 text-center my-5><v-btn
+                        @click="clearAndRefresh"
+                    color="green">find neighbor</v-btn></v-flex>
+
+        </v-layout>
     </v-container>
 </template>
 
@@ -39,7 +54,8 @@
     data(){
         return {
             dataUrl:"",
-            items:[]
+            items:[],
+            selected: -1
         }
     },
     
@@ -167,9 +183,39 @@
             alert("back end server is off-line \n no refresh");
         });
       },
+
+      selectPicture:function(id){
+          this.selected = id
+      },
+
+      clearSelect:function(){
+          this.selected = -1
+      },
+
+      getColor:function(id){
+          if (id == this.selected) return 'orange'
+          else return 'white'
+      },
+      
+      selected_id:function(id){
+          if (id == this.selected) return true
+          else return false
+      },
+
+      clearAndRefresh:function(){
+          this.clearSelect()
+          this.get_gifs()
+
+      },
+
       itemCountInRow:function(row){
         return this.attendances.slice((row - 1) * this.colNumber, row * this.colNumber)
       }
     }
   }
 </script>
+
+
+<style scoped lang="scss">
+$outline-width: thick;
+</style>
