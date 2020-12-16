@@ -34,7 +34,7 @@
                         @click="clearSelect"
                     color="red">deselect</v-btn></v-flex>
         <v-flex xs12 sm6 md12 text-center my-5><v-btn
-                        @click="get_gifs"
+                        @click="get_gifs2"
                     color="orange">refresh</v-btn></v-flex>
 
         <v-flex xs12 sm6 md12 text-center my-5><v-btn
@@ -55,7 +55,10 @@
         return {
             dataUrl:"",
             items:[],
-            selected: -1
+            selected: -1,
+            latent:[],
+            r1 : 0.25,
+            r2 : 0.125,
         }
     },
     
@@ -65,16 +68,13 @@
             this.items = []
             for (let step = 0; step < this.colNumber*this.rowCount; step++){
                 shasum.update((new Date).toString());
-                //this.axios.get("http://localhost:15000/generate_gif", 
-                this.axios.get("https://c7c273c3f0db.ngrok.io/generate_gif?hash=" + String(shasum.digest('hex')), 
-                {responseType: "arraybuffer"})
+                this.axios.get("https://c7c273c3f0db.ngrok.io/generate_gif2?hash=" + String(shasum.digest('hex')))
                 .then((response) => {
-                    const prefix = `data:${response.headers["content-type"]};base64,`;
-                    const base64 = new Buffer(response.data, "binary").toString("base64");
-                    //this.dataUrl = prefix + response.data.img;
-                    //this.items.push(prefix + response.data.img);
+                    const prefix = `data:image/png;base64,`;
+                    const base64 = response.data.img;
                     this.dataUrl = prefix + base64;
                     this.items.push(prefix + base64);
+                    this.latent.push(response.data.latent)
                 })
                 .catch((e) => {
                     alert(e);
@@ -136,44 +136,20 @@
     },
 
     methods: {
-      getIp: function() {
-        this.items = []
-        const params = new URLSearchParams();
-        params.append('num', 3);
-        this.axios.post('https://c970cc9ad36a.ngrok.io/generate', params)
-            .then((response) => {
-                const prefix = `data:image/png;base64,`;
-                //const base64 = new Buffer(response.data.img, "binary").toString("base64");
-                for (let ret_img in response.data.img) {
-                    this.dataUrl = prefix + response.data.img[ret_img];
-                    this.items.push(prefix + response.data.img[ret_img]);
-                }
 
-                console.log(response.data.img);
-                //console.log(response.data.img);
-            })
-            .catch((e) => {
-                alert(e);
-            });
-      },
-
-      get_gifs:function() {
+      get_gifs2:function() {
         this.axios.get("https://c7c273c3f0db.ngrok.io/wakeup_test"
         ).then(() => {
             this.items = []
             for (let step = 0; step < this.colNumber*this.rowCount; step++){
                 shasum.update((new Date).toString());
-                //this.axios.get("http://localhost:15000/generate_gif", 
-                this.axios.get("https://c7c273c3f0db.ngrok.io/generate_gif?hash=" + String(shasum.digest('hex')), 
-                {responseType: "arraybuffer"})
+                this.axios.get("https://c7c273c3f0db.ngrok.io/generate_gif2?hash=" + String(shasum.digest('hex')))
                 .then((response) => {
-                    const prefix = `data:${response.headers["content-type"]};base64,`;
-                    const base64 = new Buffer(response.data, "binary").toString("base64");
-                    //this.dataUrl = prefix + response.data.img;
-                    //this.items.push(prefix + response.data.img);
+                    const prefix = `data:image/png;base64,`;
+                    const base64 = response.data.img;
                     this.dataUrl = prefix + base64;
                     this.items.push(prefix + base64);
-                    console.log(this.dataUrl);
+                    this.latent.push(response.data.latent);
                 })
                 .catch((e) => {
                     alert(e);
@@ -182,6 +158,44 @@
         }).catch(() => {
             alert("back end server is off-line \n no refresh");
         });
+        this.r1 = 0.25
+        this.r2 = 0.5
+      },
+
+      get_gifs3:function() {
+        this.axios.get("https://c7c273c3f0db.ngrok.io/wakeup_test"
+        ).then(() => {
+            this.items = [];
+            const _latent = (this.selected == -1) ? [] : this.latent[this.selected];
+            const params = new URLSearchParams();
+            params.append('latent', _latent)
+            params.append('r1', this.r1)
+            params.append('r2', this.r2)
+
+
+            this.latent = []
+
+            for (let step = 0; step < this.colNumber*this.rowCount; step++){
+                shasum.update((new Date).toString());
+
+                this.axios.post("https://c7c273c3f0db.ngrok.io/generate_gif3?hash=" + String(shasum.digest('hex')), 
+                params)
+                .then((response) => {
+                    const prefix = `data:image/png;base64,`;
+                    const base64 = response.data.img;
+                    this.dataUrl = prefix + base64;
+                    this.items.push(prefix + base64);
+                    this.latent.push(response.data.latent)
+                })
+                .catch((e) => {
+                    alert(e);
+                });
+        }
+        }).catch(() => {
+            alert("back end server is off-line \n no refresh");
+        });
+        this.r1 = this.r1 * (3/4)
+        this.r2 = this.r2 * (3/4)
       },
 
       selectPicture:function(id){
@@ -203,9 +217,7 @@
       },
 
       clearAndRefresh:function(){
-          this.clearSelect()
-          this.get_gifs()
-
+          this.get_gifs3()
       },
 
       itemCountInRow:function(row){
