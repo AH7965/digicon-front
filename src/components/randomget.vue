@@ -96,7 +96,37 @@
                 require("@/assets/000011.gif"),
                 require("@/assets/000012.gif"),
                 require("@/assets/000013.gif"),
-                require("@/assets/000014.gif"),];
+                require("@/assets/000014.gif"),
+                require("@/assets/000015.gif"),
+                require("@/assets/000016.gif"),
+                require("@/assets/000017.gif"),
+                require("@/assets/000018.gif"),
+                require("@/assets/000019.gif"),
+                require("@/assets/000020.gif"),
+                require("@/assets/000021.gif"),
+                require("@/assets/000022.gif"),
+                require("@/assets/000023.gif"),
+                require("@/assets/000024.gif"),
+                require("@/assets/000025.gif"),
+                require("@/assets/000026.gif"),
+                require("@/assets/000027.gif"),
+                require("@/assets/000028.gif"),
+                require("@/assets/000029.gif"),
+                require("@/assets/000030.gif"),
+                require("@/assets/000031.gif"),
+                require("@/assets/000032.gif"),
+                require("@/assets/000033.gif"),
+                require("@/assets/000034.gif"),
+                require("@/assets/000035.gif"),
+                require("@/assets/000036.gif"),
+                require("@/assets/000037.gif"),
+                require("@/assets/000038.gif"),
+                require("@/assets/000039.gif"),
+                require("@/assets/000040.gif"),
+                require("@/assets/000041.gif"),
+                require("@/assets/000042.gif"),
+                require("@/assets/000043.gif"),
+                require("@/assets/000044.gif"),];
 
         });
     },
@@ -195,7 +225,7 @@
             alert("back end server is off-line \n no refresh");
         });
         this.r1 = this.r1 * (3/4)
-        this.r2 = this.r2 * (3/4)
+        this.r2 = this.r2 * (1/4)
       },
 
       selectPicture:function(id){
