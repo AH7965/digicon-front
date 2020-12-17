@@ -171,6 +171,7 @@
         this.axios.get("https://c7c273c3f0db.ngrok.io/wakeup_test"
         ).then(() => {
             this.items = []
+            this.latent = []
             for (let step = 0; step < this.colNumber*this.rowCount; step++){
                 shasum.update((new Date).toString());
                 this.axios.get("https://c7c273c3f0db.ngrok.io/generate_gif2?hash=" + String(shasum.digest('hex')))
